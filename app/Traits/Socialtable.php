@@ -6,7 +6,7 @@ use App\SocialiteUser;
 use App\UserSocialite;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-trait Socialtables
+trait Socialtable
 {
     public function socialites(): HasMany
     {
