@@ -4,7 +4,7 @@ import { setIntendedUrl } from '../utils/auth';
 import PropTypes from 'prop-types';
 import {AuthConsumer} from '../context/auth';
 import AuthNav from '../components/AuthNav';
-import Footer from '..//components/Footer';
+import Footer from '../components/Footer';
 import DocumentTitle from 'react-document-title';
 
 const AuthRoute = ({ component: Component, title, ...rest }) => {
@@ -41,8 +41,6 @@ const AuthRoute = ({ component: Component, title, ...rest }) => {
     </AuthConsumer>
   );
 };
-
-// () prevent ; because one line, not {} insider (), not return
 
 AuthRoute.displayName = 'Auth Route';
 

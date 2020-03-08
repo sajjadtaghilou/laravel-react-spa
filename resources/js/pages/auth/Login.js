@@ -5,7 +5,7 @@ import { AuthConsumer } from '../../context/auth';
 import { login } from '../../api/auth';
 import {getIntendedUrl} from '../../utils/auth';
 
-const SignIn = () => {
+const Login = () => {
   let [loginForm, setLoginForm] = useState({
     email: '',
     password: '',
@@ -13,6 +13,7 @@ const SignIn = () => {
   });
 
   const handleInputChange = (e) => {
+    e.persist();
     setLoginForm(prevState => {
       return {
         ...prevState,
@@ -121,4 +122,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default Login;

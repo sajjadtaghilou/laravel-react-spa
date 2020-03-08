@@ -8,8 +8,7 @@ loadProgressBar(axios);
 
 function client () {
   let token = getToken();
-  let authorization = token ? `Bearer ${token}` : null;
-  axios.defaults.headers.common['Authorization'] = authorization;
+  axios.defaults.headers.common['Authorization'] = token ? `Bearer ${token}` : null;
   return axios;
 }
 

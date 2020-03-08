@@ -18,7 +18,7 @@ export const register = credentials => {
 };
 
 export const googleLogin = credentials => {
-  return client().post('/api/google/signin', credentials).then(({ data: { data: user, meta: {token} } }) => {
+  return client().post('/api/google/login', credentials).then(({ data: { data: user, meta: {token} } }) => {
     return Promise.resolve({ user, token });
   }).catch(error => {
     return Promise.reject(error);

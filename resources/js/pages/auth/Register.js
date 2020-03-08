@@ -14,6 +14,7 @@ function Register () {
   });
 
   const handleInputChange = e => {
+    e.persist(); // react event is a wrapper of browser event, not cannot use async, need to call persist to use https://reactjs.org/docs/events.html#event-pooling
     setRegisterForm(prevState => {
       return {
         ...prevState,

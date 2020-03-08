@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react';
+import PropTypes from 'prop-types';
 import {getToken, setToken} from '../utils/auth';
 import {getUser} from '../api/auth';
-import PropTypes from 'prop-types';
 
 const AuthContext = React.createContext();
 const AuthConsumer = AuthContext.Consumer;
@@ -15,47 +15,41 @@ function AuthProvider ({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [authenticated, setAuthenticated] = useState(false);
 
+  const initAuth = () => {
+    return getToken()
+      ? getUser()
+      : Promise.resolve(null);
+  };
+
+  const handleUserResponse = ({user, token}) => {
+    setToken(token);
+    setCurrentUser(user);
+    setAuthenticated(!!user);
+  };
+
+  const onLogin = handleUserResponse;
+  const onRegister = handleUserResponse;
+  const onLogout = () => handleUserResponse({user: null, token: null});
+
   useEffect(() => {
-    initAuthFromExistingToken().then((user) => {
+    initAuth().then((user) => {
       setInitializing(false);
       setCurrentUser(user);
       setAuthenticated(!!user);
     });
   }, []);
 
-  const handleUserResponse = ({user, token}) => {
-    setToken(token);
-    setCurrentUser(user);
-    setAuthenticated(true);
-  };
-
-  const onLogin = handleUserResponse;
-  const onRegister = handleUserResponse;
-  const onLogout = () => {
-    setToken(null);
-    setCurrentUser(null);
-    setAuthenticated(false);
-  };
-
-  return <AuthContext.Provider value={{
-    initializing,
-    currentUser,
-    onLogin,
-    onRegister,
-    onLogout,
-    authenticated }
-  }> { children }
-  </AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{
+      initializing,
+      currentUser,
+      onLogin,
+      onRegister,
+      onLogout,
+      authenticated }
+    }> { children }
+    </AuthContext.Provider>
+  );
 }
 
-export {AuthProvider, AuthConsumer};
-
-function initAuthFromExistingToken () {
-  let token = getToken();
-
-  if (token) {
-    return getUser();
-  } else {
-    return Promise.resolve(null);
-  }
-}
+export { AuthProvider, AuthConsumer };
