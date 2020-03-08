@@ -1,7 +1,7 @@
 import client from './client';
 
 export const login = credentials => {
-  return client().post('/api/signin', credentials).then(({ data: { data: user, meta: { token } } }) => {
+  return client().post('/api/login', credentials).then(({ data: { data: user, meta: { token } } }) => {
     return Promise.resolve({ user, token });
   }).catch(error => {
     return Promise.reject(error);
@@ -23,6 +23,20 @@ export const googleLogin = credentials => {
   }).catch(error => {
     return Promise.reject(error);
   });
+};
+
+export const forgotPassword = ({ email }) => {
+  return client().post('/api/password/email', { email })
+    .then(({ data: { status } }) => {
+      return Promise.resolve({ status });
+    });
+};
+
+export const resetPassword = credentials => {
+  return client().post('/api/password/reset', credentials)
+    .then(({ data: { status } }) => {
+      return Promise.resolve({status});
+    });
 };
 
 export const logout = () => {

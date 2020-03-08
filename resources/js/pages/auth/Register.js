@@ -61,7 +61,7 @@ function Register () {
               Start your free trial
               </div>
               <div className="text-gray-800">
-                <span className="text-gray-700">Or</span> <Link to="/signin" className="underline">sign in to your account</Link>
+                <span className="text-gray-700">Or</span> <Link to="/login" className="underline">sign in to your account</Link>
               </div>
             </div>
 

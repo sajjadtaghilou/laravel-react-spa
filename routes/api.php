@@ -24,7 +24,7 @@ Route::name('api.')->namespace('Api')->group(function () {
             Route::post('password/reset', 'ResetPasswordController@reset');
 
             // Socialite Login
-            Route::post('google/signin', 'GoogleSignInController@SignIn');
+            Route::post('google/login', 'GoogleSignInController@SignIn');
         });
     });
 
