@@ -58,3 +58,26 @@ npm run dev
 ```bash
 php artisan serve
 ```
+
+
+// cooke naming
+// constant used in a project javascript
+
+// promise
+// unused parameter naming convention resolve
+// in python, use _ for a throwable vaiable
+
+// lodash size
+//  reduce lodash size: import isEmpty from 'lodash/isEmpty'
+
+// constant in a file
+// const localStorageKey = '__bookshelf_token__'
+/*
+function logout() {
+  window.localStorage.removeItem(localStorageKey)
+  return Promise.resolve()
+}
+*/
+// use github fetch
+
+// javascript snippet func

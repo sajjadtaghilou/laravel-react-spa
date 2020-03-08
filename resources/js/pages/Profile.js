@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 const propTypes = {
-  auth: PropTypes.object.isRequired,
-  loading: PropTypes.bool.isRequired
+  auth: PropTypes.object.isRequired
 };
 
 class Profile extends Component {
@@ -19,6 +18,6 @@ class Profile extends Component {
 
 Profile.propTypes = propTypes;
 
-const mapStateToProps = ({ auth, loading }) => ({ auth, loading });
+const mapStateToProps = ({ auth }) => ({ auth });
 
 export default connect(mapStateToProps)(Profile);

@@ -1,22 +1,33 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
 import loadGoogleApi from '../helpers/load-google-api';
+import {getIntendedUrl} from '../utils/auth';
+import {useHistory} from 'react-router-dom';
+import {AuthConsumer} from '../context/auth';
+import {googleLogin} from '../api/auth';
 
-const propTypes = {
-  googleSignInSuccess: PropTypes.func.isRequired
-};
+function GoogleLogin () {
+  let [gapi, setGapi] = useState(null);
 
-class GoogleSignIn extends Component {
-  componentDidMount () {
-    this.gapi = null;
-    this.initGoogleBtn();
-  }
-
-  async initGoogleBtn () {
+  const handleAuthClick = onGoogleLogin => async () => {
     try {
-      this.gapi = await loadGoogleApi();
-      this.gapi.load('auth2', () => {
-        this.gapi.auth2.init({
+      let res = await gapi.auth2.getAuthInstance().signIn();
+
+      googleLogin({ id_token: res.getAuthResponse().id_token })
+        .then(({ user, token }) => {
+          onGoogleLogin({ user, token });
+          getIntendedUrl().then(url => useHistory().push(url));
+        });
+    } catch (e) {
+      console.log('e', e);
+    }
+  };
+
+  const initGoogleGapiInstance = async () => {
+    try {
+      let loadGapi = await loadGoogleApi();
+      setGapi(loadGapi);
+      gapi.load('auth2', () => {
+        gapi.auth2.init({
           client_id: window.App.google_client_id,
           fetch_basic_profile: true,
           scope: 'profile'
@@ -25,37 +36,30 @@ class GoogleSignIn extends Component {
     } catch (e) {
       console.log(e);
     }
-  }
+  };
 
-  async handleAuthClick () {
-    try {
-      let res = await this.gapi.auth2.getAuthInstance().signIn();
-      this.props.googleSignInSuccess({
-        id_token: res.getAuthResponse().id_token
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  useEffect(() => {
+    initGoogleGapiInstance();
+  }, []);
 
-  render () {
-    return (
-      <button type="button"
-        id="g-signin-btn"
-        className="w-full text-grey-darker"
-        onClick={() => this.handleAuthClick()}>
-        <img width="32"
-
-          className="align-middle mx-2 rounded-full"
-          alt="Google"
-          title="Google"
-          src="/images/icons/google.svg" />
-
-      </button>
-    );
-  }
+  return (
+    <AuthConsumer>
+      {
+        ({onGoogleLogin}) => (
+          <button type="button"
+            id="g-signin-btn"
+            className="w-full text-grey-darker"
+            onClick={handleAuthClick(onGoogleLogin)}>
+            <img width="32"
+              className="align-middle mx-2 rounded-full"
+              alt="Google"
+              title="Google"
+              src="/images/icons/google.svg" />
+          </button>
+        )
+      }
+    </AuthConsumer>
+  );
 }
 
-GoogleSignIn.propTypes = propTypes;
-
-export default GoogleSignIn;
+export default GoogleLogin;

@@ -1,4 +1,4 @@
-export const destructServerErrors = error => {
+export const destructServerError = error => {
   if (error.response && error.response.data && error.response.data.errors) {
     return error.response.data.errors;
   }
@@ -7,7 +7,7 @@ export const destructServerErrors = error => {
 };
 
 export const hasError = (errors, field) => {
-  return !window._.isEmpty(errors[field]);
+  return !!errors[field];
 };
 
 export const getError = (errors, field) => {

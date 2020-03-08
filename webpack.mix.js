@@ -24,4 +24,4 @@ mix.react('resources/js/app.js', 'public/js')
     node: {
       fs: 'empty'
     }
-  });
+  }).sourceMaps();
