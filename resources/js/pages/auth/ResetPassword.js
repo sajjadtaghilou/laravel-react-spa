@@ -21,7 +21,7 @@ function ResetPassword () {
       ...resetPasswordForm,
       [e.target.name]: e.target.value,
       error: {
-        ...resetPasswordForm,
+        ...resetPasswordForm.error,
         ...{ [e.target.name]: '' }
       }
     });
