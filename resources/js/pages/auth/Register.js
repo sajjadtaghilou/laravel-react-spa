@@ -14,28 +14,28 @@ function Register () {
   });
 
   const handleInputChange = e => {
-    e.persist(); // react event is a wrapper of browser event, not cannot use async, need to call persist to use https://reactjs.org/docs/events.html#event-pooling
-    setRegisterForm(prevState => {
-      return {
-        ...prevState,
-        [e.target.name]: e.target.value,
-        error: {
-          ...prevState.error,
-          ...{ [e.target.name]: '' }
-        }
-      };
+    e.persist();
+    setRegisterForm({
+      ...registerForm,
+      [e.target.name]: e.target.value,
+      error: {
+        ...registerForm.error,
+        ...{ [e.target.name]: '' }
+      }
     });
   };
 
   const handleSubmit = onRegister => e => {
     e.preventDefault();
-    Register(registerForm).then(({user, token}) => {
+    register(registerForm).then(({user, token}) => {
       onRegister({user, token});
       useHistory().push('/home');
     }).catch(error => {
-      this.setLoginForm({
-        ...register, // why prev not directly ?
-        error: destructServerError(error)
+      setRegisterForm(prevState => {
+        return {
+          ...prevState,
+          error: destructServerError(error)
+        };
       });
     });
   };

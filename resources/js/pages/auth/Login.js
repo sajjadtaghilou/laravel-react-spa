@@ -14,17 +14,17 @@ const Login = () => {
 
   const handleInputChange = (e) => {
     e.persist();
-    setLoginForm(prevState => {
-      return {
-        ...prevState,
-        [e.target.name]: e.target.value,
-        error: {
-          ...prevState.error,
-          ...{ [e.target.name]: '' }
-        }
-      };
+
+    setLoginForm({
+      ...loginForm,
+      [e.target.name]: e.target.value,
+      error: {
+        ...loginForm.error,
+        ...{ [e.target.name]: '' }
+      }
     });
   };
+
   const handleSubmit = (onLogin) => e => {
     e.preventDefault();
 
@@ -32,9 +32,11 @@ const Login = () => {
       onLogin({user, token});
       getIntendedUrl().then(url => useHistory.push(url));
     }).catch(error => {
-      this.setLoginForm({
-        ...loginForm, // why prev not directly ?
-        error: destructServerError(error)
+      setLoginForm(prevState => {
+        return {
+          ...prevState,
+          error: destructServerError(error)
+        };
       });
     });
   };
