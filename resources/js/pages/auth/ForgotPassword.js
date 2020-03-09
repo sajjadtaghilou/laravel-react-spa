@@ -1,29 +1,20 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { forgotPassword } from '../../api/auth';
-import { destructServerError, hasError, getError } from '../../utils/formError';
+import useFormError from '../../components/FormError';
 
 function ForgotPassword () {
-  let [forgotPasswordForm, setForgotPasswordForm] = useState({
-    email: '',
-    error: {},
-    resetMessage: ''
-  });
+  let [forgotPasswordForm, setForgotPasswordForm] = useState({ email: '', resetMessage: '' });
+  let { hasError, getError, parseServerError, setError } = useFormError();
 
   const handleSubmit = e => {
     e.preventDefault();
 
     forgotPassword({ email: forgotPasswordForm.email })
       .then(({ status }) => {
-        setForgotPasswordForm({
-          ...forgotPasswordForm,
-          resetMessage: status
-        });
+        setForgotPasswordForm({ ...forgotPasswordForm, resetMessage: status });
       }).catch(error => {
-        setForgotPasswordForm({
-          ...forgotPasswordForm,
-          resetMessage: '',
-          error: destructServerError(error) });
+        setError(parseServerError(error));
       });
   };
 
@@ -33,11 +24,10 @@ function ForgotPassword () {
     setForgotPasswordForm({
       ...forgotPassword,
       [e.target.name]: e.target.value,
-      resetMessage: '',
-      error: {
-        ...forgotPasswordForm.error,
-        ...{ [e.target.name]: '' }
-      } });
+      resetMessage: '' }
+    );
+
+    setError({ [e.target.name]: '' });
   };
 
   return (
@@ -80,13 +70,13 @@ function ForgotPassword () {
               id="email"
               type="email"
               name="email"
-              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${hasError(forgotPasswordForm.error, 'email') ? 'border-red' : ''}`}
+              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${hasError('email') ? 'border-red' : ''}`}
               placeholder="e.g.jane@example.com"
               required
               autoFocus
             />
-            {hasError(forgotPasswordForm.error, 'email') &&
-                  <p className="text-red-500 text-xs pt-2">{getError(forgotPasswordForm.error, 'email')}</p>
+            {hasError('email') &&
+                  <p className="text-red-500 text-xs pt-2">{getError('email')}</p>
             }
 
             <div className="mt-6 mb-2">

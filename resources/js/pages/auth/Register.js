@@ -1,29 +1,29 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { destructServerError, hasError, getError } from '../../utils/formError';
 import {AuthConsumer} from '../../context/auth';
 import {register} from '../../api/auth';
+import useFormError from '../../components/FormError';
 
 function Register () {
   let history = useHistory();
+  let { hasError, getError, parseServerError, setError } = useFormError();
+
   let [registerForm, setRegisterForm] = useState({
     name: '',
     email: '',
     password: '',
-    password_confirmation: '',
-    error: {}
+    password_confirmation: ''
   });
 
   const handleInputChange = e => {
     e.persist();
     setRegisterForm({
       ...registerForm,
-      [e.target.name]: e.target.value,
-      error: {
-        ...registerForm.error,
-        ...{ [e.target.name]: '' }
-      }
+      [e.target.name]: e.target.value
+
     });
+
+    setError({ [e.target.name]: '' });
   };
 
   const handleSubmit = onRegister => e => {
@@ -32,12 +32,7 @@ function Register () {
       onRegister({user, token});
       history.push('/home');
     }).catch(error => {
-      setRegisterForm(prevState => {
-        return {
-          ...prevState,
-          error: destructServerError(error)
-        };
-      });
+      setError(parseServerError(error));
     });
   };
 
@@ -84,8 +79,8 @@ function Register () {
                     required
                     autoFocus />
 
-                  {hasError(registerForm.error, 'name') &&
-                  <p className="text-red text-xs pt-2">{getError(registerForm.error, 'name')}</p>
+                  {hasError('name') &&
+                  <p className="text-red text-xs pt-2">{getError('name')}</p>
                   }
                 </div>
 
@@ -99,11 +94,11 @@ function Register () {
                     id="email"
                     name="email"
                     type="email"
-                    className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${hasError(registerForm.error, 'name') ? 'border-red' : ''}`}
+                    className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${hasError('name') ? 'border-red' : ''}`}
                     required />
 
-                  {hasError(registerForm.error, 'email') &&
-                  <p className="text-red text-xs pt-2">{getError(registerForm.error, 'email')}</p>
+                  {hasError('email') &&
+                  <p className="text-red text-xs pt-2">{getError('email')}</p>
                   }
                 </div>
 
@@ -115,12 +110,12 @@ function Register () {
                     type="password"
                     id="password"
                     name="password"
-                    className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100  ${hasError(registerForm.error, 'password') ? 'border-red' : ''}`}
+                    className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100  ${hasError('password') ? 'border-red' : ''}`}
                     minLength={6}
                     required />
 
-                  {hasError(registerForm.error, 'password') &&
-                  <p className="text-red text-xs pt-2">{getError(registerForm.error, 'password')}</p>
+                  {hasError('password') &&
+                  <p className="text-red text-xs pt-2">{getError('password')}</p>
                   }
                 </div>
 
@@ -132,7 +127,7 @@ function Register () {
                     type="password"
                     id="password-confirmation"
                     name="password_confirmation"
-                    className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${hasError(registerForm.error, 'password') ? 'border-red' : ''}`}
+                    className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${hasError('password') ? 'border-red' : ''}`}
                     required />
                 </div>
 

@@ -1,29 +1,21 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { destructServerError, hasError, getError } from '../../utils/formError';
 import { AuthConsumer } from '../../context/auth';
 import { login } from '../../api/auth';
 import {getIntendedUrl} from '../../utils/auth';
+import useFormError from '../../components/FormError';
 
 function Login () {
   let history = useHistory();
-  let [loginForm, setLoginForm] = useState({
-    email: '',
-    password: '',
-    error: {}
-  });
+
+  let { hasError, getError, parseServerError, setError } = useFormError();
+
+  let [loginForm, setLoginForm] = useState({ email: '', password: '' });
 
   const handleInputChange = (e) => {
     e.persist();
-
-    setLoginForm({
-      ...loginForm,
-      [e.target.name]: e.target.value,
-      error: {
-        ...loginForm.error,
-        ...{ [e.target.name]: '' }
-      }
-    });
+    setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
+    setError({ [e.target.name]: '' });
   };
 
   const handleSubmit = (onLogin) => e => {
@@ -33,12 +25,7 @@ function Login () {
       onLogin({user, token});
       getIntendedUrl().then(history.push);
     }).catch(error => {
-      setLoginForm(prevState => {
-        return {
-          ...prevState,
-          error: destructServerError(error)
-        };
-      });
+      setError(parseServerError(error));
     });
   };
 
@@ -84,13 +71,13 @@ function Login () {
                     id="email"
                     type="email"
                     name="email"
-                    className={`appearance-none border rounded w-full py-1 px-3 text-grey-darker bg-gray-100 ${hasError(loginForm.error, 'email') ? 'border-red' : ''}`}
+                    className={`appearance-none border rounded w-full py-1 px-3 text-grey-darker bg-gray-100 ${hasError('email') ? 'border-red' : ''}`}
                     required
                     autoFocus
                   />
 
-                  {hasError(loginForm.error, 'email') &&
-                  <p className="text-red-500 text-xs pt-2">{getError(loginForm.error, 'email')}</p>
+                  {hasError('email') &&
+                  <p className="text-red-500 text-xs pt-2">{ getError('email') }</p>
                   }
 
                 </div>

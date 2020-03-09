@@ -1,32 +1,26 @@
 import React, { useState } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
-import { destructServerError, hasError, getError } from '../../utils/formError';
 import {resetPassword} from '../../api/auth';
+import useFormError from '../../components/FormError';
 
 function ResetPassword () {
   const token = useRouteMatch().params.token;
 
+  let { hasError, getError, parseServerError, setError } = useFormError();
+  let { passwordResetFeedback, setPasswordResetFeedback } = useState('');
   let initialForm = {
     email: '',
     password: '',
-    password_confirmation: '',
-    error: {},
-    resetMessage: ''
+    password_confirmation: ''
   };
 
   let [resetPasswordForm, setRestPasswordForm] = useState(initialForm);
 
   const handleInputChange = e => {
     e.persist();
-
-    setRestPasswordForm({
-      ...resetPasswordForm,
-      [e.target.name]: e.target.value,
-      error: {
-        ...resetPasswordForm.error,
-        ...{ [e.target.name]: '' }
-      }
-    });
+    setRestPasswordForm({ ...resetPasswordForm, [e.target.name]: e.target.value });
+    setError({ [e.target.name]: '' });
+    setPasswordResetFeedback('');
   };
 
   const handleSubmit = e => {
@@ -34,9 +28,11 @@ function ResetPassword () {
 
     resetPassword({...resetPasswordForm, token})
       .then(({status}) => {
-        setRestPasswordForm({ ...initialForm, resetMessage: status });
+        setRestPasswordForm({ ...initialForm });
+        setPasswordResetFeedback(status);
       }).catch(error => {
-        setRestPasswordForm({ ...resetPasswordForm, resetMessage: '', error: destructServerError(error) });
+        setError(parseServerError(error));
+        setPasswordResetFeedback('');
       });
   };
 
@@ -45,7 +41,7 @@ function ResetPassword () {
 
       { resetPasswordForm.resetMessage !== '' && (
         <div className="bg-white border-l-4 border-blue text-sm text-grey-darker p-4 mb-4 w-3/4 sm:w-1/2 lg:w-2/5 xl:w-1/3" role="alert">
-          <p> {resetPasswordForm.resetMessage}
+          <p> {passwordResetFeedback}
             <span className="pl-2">
                   Please
               <Link to="/login" className="no-underline text-grey-darker font-bold"> login </Link>
@@ -72,14 +68,14 @@ function ResetPassword () {
             id="email"
             type="email"
             name="email"
-            className={`appearance-none border rounded w-full py-2 px-3 text-grey-darker ${hasError(resetPasswordForm.error, 'email') ? 'border-red' : ''}`}
+            className={`appearance-none border rounded w-full py-2 px-3 text-grey-darker ${hasError('email') ? 'border-red' : ''}`}
             placeholder="e.g.jane@example.com"
             required
             autoFocus
           />
 
-          {hasError(resetPasswordForm.error, 'email') &&
-                <p className="text-red-500 text-xs pt-2">{getError(resetPasswordForm.error, 'email')}</p>
+          {hasError('email') &&
+                <p className="text-red-500 text-xs pt-2">{getError('email')}</p>
           }
 
         </div>
@@ -91,12 +87,12 @@ function ResetPassword () {
             type="password"
             id="password"
             name="password"
-            className={`appearance-none border rounded w-full py-2 px-3 text-grey-darker  ${hasError(resetPasswordForm.error, 'password') ? 'border-red' : ''}`}
+            className={`appearance-none border rounded w-full py-2 px-3 text-grey-darker  ${hasError('password') ? 'border-red' : ''}`}
             minLength={8}
             required />
 
-          {hasError(resetPasswordForm.error, 'password') &&
-                <p className="text-red-500 text-xs pt-2">{getError(resetPasswordForm.error, 'password')}</p>
+          {hasError('password') &&
+                <p className="text-red-500 text-xs pt-2">{getError('password')}</p>
           }
         </div>
 
@@ -108,7 +104,7 @@ function ResetPassword () {
             type="password"
             id="password-confirmation"
             name="password_confirmation"
-            className={`appearance-none border rounded w-full py-2 px-3 text-grey-darker  ${hasError(resetPasswordForm.error, 'password') ? 'border-red' : ''}`}
+            className={`appearance-none border rounded w-full py-2 px-3 text-grey-darker  ${hasError('password') ? 'border-red' : ''}`}
             required />
         </div>
 
