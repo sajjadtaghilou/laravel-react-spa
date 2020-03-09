@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 
-class GoogleSignInController extends Controller
+class GoogleLoginController extends Controller
 {
-    public function SignIn(Request $request)
+    public function __invoke(Request $request)
     {
         $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
 

@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 
-class SignInController extends Controller
+class LoginController extends Controller
 {
-    public function signIn(Request $request)
+    public function __invoke(Request $request)
     {
         $this->validate($request, [
             'email' => 'required',
