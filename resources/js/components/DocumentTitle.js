@@ -1,4 +1,3 @@
-'use strict';
 let { useEffect } = require('react');
 
 function useDocumentTitle (title) {
