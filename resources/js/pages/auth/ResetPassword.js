@@ -77,7 +77,7 @@ function ResetPassword () {
           />
 
           {hasError(resetPasswordForm.error, 'email') &&
-                <p className="text-red text-xs pt-2">{getError(resetPasswordForm.error, 'email')}</p>
+                <p className="text-red-500 text-xs pt-2">{getError(resetPasswordForm.error, 'email')}</p>
           }
 
         </div>
@@ -94,7 +94,7 @@ function ResetPassword () {
             required />
 
           {hasError(resetPasswordForm.error, 'password') &&
-                <p className="text-red text-xs pt-2">{getError(resetPasswordForm.error, 'password')}</p>
+                <p className="text-red-500 text-xs pt-2">{getError(resetPasswordForm.error, 'password')}</p>
           }
         </div>
 

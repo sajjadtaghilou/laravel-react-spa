@@ -16,7 +16,7 @@ Route::name('api.')->namespace('Api')->group(function () {
     // Unprotected routes
     Route::group(['middleware' => 'guest:api'], function () {
         Route::namespace('Auth')->group(function () {
-            Route::post('signin', 'SignInController@signIn')->name('signin');
+            Route::post('login', 'SignInController@signIn')->name('signin');
             Route::post('register', 'RegisterController@register')->name('register');
 
             // Password Reset Routes...

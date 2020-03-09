@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { NavLink, Link, useHistory } from 'react-router-dom';
 import {AuthConsumer} from '../context/auth';
+import { setIntendedUrl } from '../utils/auth';
 
 function AuthNav () {
+  let history = useHistory();
   let [hideMobileNav, setHideMobileNav] = useState(true);
 
   const toggleMobileNav = () => {
@@ -13,7 +15,8 @@ function AuthNav () {
 
   const handleLogout = onLogout => () => {
     onLogout();
-    useHistory().push('/');
+    history.push('/');
+    setIntendedUrl(null);
   };
 
   return (

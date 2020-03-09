@@ -84,7 +84,7 @@ function Register () {
                     autoFocus />
 
                   {hasError(registerForm.error, 'name') &&
-                  <p className="text-red text-xs pt-2">{getError(registerForm.error, 'name')}</p>
+                  <p className="text-red-500 text-xs pt-2">{getError(registerForm.error, 'name')}</p>
                   }
                 </div>
 
@@ -102,7 +102,7 @@ function Register () {
                     required />
 
                   {hasError(registerForm.error, 'email') &&
-                  <p className="text-red text-xs pt-2">{getError(registerForm.error, 'email')}</p>
+                  <p className="text-red-500 text-xs pt-2">{getError(registerForm.error, 'email')}</p>
                   }
                 </div>
 
@@ -119,7 +119,7 @@ function Register () {
                     required />
 
                   {hasError(registerForm.error, 'password') &&
-                  <p className="text-red text-xs pt-2">{getError(registerForm.error, 'password')}</p>
+                  <p className="text-red-500 text-xs pt-2">{getError(registerForm.error, 'password')}</p>
                   }
                 </div>
 

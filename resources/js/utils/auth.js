@@ -3,7 +3,7 @@ const INTENDED_URL = 'intended_url';
 const DEFAULT_INTENDED_URL = '/home';
 
 export const getToken = () => {
-  window.localStorage.getItem(authToken);
+  return window.localStorage.getItem(authToken);
 };
 
 export const setToken = token => {

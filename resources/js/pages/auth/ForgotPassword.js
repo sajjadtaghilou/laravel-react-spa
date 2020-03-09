@@ -21,9 +21,9 @@ function ForgotPassword () {
         });
       }).catch(error => {
         setForgotPasswordForm({
-          ...forgotPassword,
+          ...forgotPasswordForm,
           resetMessage: '',
-          errors: destructServerError(error) });
+          error: destructServerError(error) });
       });
   };
 
@@ -86,7 +86,7 @@ function ForgotPassword () {
               autoFocus
             />
             {hasError(forgotPasswordForm.error, 'email') &&
-                  <p className="text-red-600 text-xs pt-2">{getError(forgotPasswordForm.error, 'email')}</p>
+                  <p className="text-red-500 text-xs pt-2">{getError(forgotPasswordForm.error, 'email')}</p>
             }
 
             <div className="mt-6 mb-2">

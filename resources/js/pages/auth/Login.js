@@ -5,7 +5,8 @@ import { AuthConsumer } from '../../context/auth';
 import { login } from '../../api/auth';
 import {getIntendedUrl} from '../../utils/auth';
 
-const Login = () => {
+function Login () {
+  let history = useHistory();
   let [loginForm, setLoginForm] = useState({
     email: '',
     password: '',
@@ -30,7 +31,7 @@ const Login = () => {
 
     login(loginForm).then(({ user, token }) => {
       onLogin({user, token});
-      getIntendedUrl().then(url => useHistory.push(url));
+      getIntendedUrl().then(history.push);
     }).catch(error => {
       setLoginForm(prevState => {
         return {
@@ -89,7 +90,7 @@ const Login = () => {
                   />
 
                   {hasError(loginForm.error, 'email') &&
-                  <p className="text-red text-xs pt-2">{getError(loginForm.error, 'email')}</p>
+                  <p className="text-red-500 text-xs pt-2">{getError(loginForm.error, 'email')}</p>
                   }
 
                 </div>
