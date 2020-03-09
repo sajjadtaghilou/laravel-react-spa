@@ -2,26 +2,29 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { AuthConsumer } from '../context/auth';
-import DocumentTitle from 'react-document-title';
+import useDocumentTitle from '../components/DocumentTitle';
 
-const GuestRoute = ({ component: Component, title, ...rest }) => (
-  <AuthConsumer>
-    {
-      ({authenticated}) => (
-        <Route
-          {...rest}
-          render={props => authenticated
-            ? <Redirect to={{ pathname: '/home', state: { from: props.location } }} />
-            : <DocumentTitle title={`${title} - ${window.App.name}`}>
-              <Component {...props} />
-            </DocumentTitle>
-          }
-        />
-      )
-    }
+function GuestRoute ({ component: Component, title, ...rest }) {
+  useDocumentTitle(title);
 
-  </AuthConsumer>
-);
+  return (
+    <AuthConsumer>
+      {
+        ({authenticated}) => (
+          <Route
+            {...rest}
+            render={props => authenticated
+              ? <Redirect to={{ pathname: '/home', state: { from: props.location } }} />
+              : <Component {...props} />
+            }
+          />
+        )
+      }
+
+    </AuthConsumer>
+  )
+  ;
+};
 
 GuestRoute.displayName = 'Guest Route';
 

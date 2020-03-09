@@ -5,6 +5,7 @@ import {AuthConsumer} from '../../context/auth';
 import {register} from '../../api/auth';
 
 function Register () {
+  let history = useHistory();
   let [registerForm, setRegisterForm] = useState({
     name: '',
     email: '',
@@ -29,7 +30,7 @@ function Register () {
     e.preventDefault();
     register(registerForm).then(({user, token}) => {
       onRegister({user, token});
-      useHistory().push('/home');
+      history.push('/home');
     }).catch(error => {
       setRegisterForm(prevState => {
         return {
@@ -61,7 +62,7 @@ function Register () {
               Start your free trial
               </div>
               <div className="text-gray-800">
-                <span className="text-gray-700">Or</span> <Link to="/login" className="underline">sign in to your account</Link>
+                <span className="text-gray-700">Or</span> <Link to="/signin" className="underline">sign in to your account</Link>
               </div>
             </div>
 
@@ -84,7 +85,7 @@ function Register () {
                     autoFocus />
 
                   {hasError(registerForm.error, 'name') &&
-                  <p className="text-red-500 text-xs pt-2">{getError(registerForm.error, 'name')}</p>
+                  <p className="text-red text-xs pt-2">{getError(registerForm.error, 'name')}</p>
                   }
                 </div>
 
@@ -102,7 +103,7 @@ function Register () {
                     required />
 
                   {hasError(registerForm.error, 'email') &&
-                  <p className="text-red-500 text-xs pt-2">{getError(registerForm.error, 'email')}</p>
+                  <p className="text-red text-xs pt-2">{getError(registerForm.error, 'email')}</p>
                   }
                 </div>
 
@@ -119,7 +120,7 @@ function Register () {
                     required />
 
                   {hasError(registerForm.error, 'password') &&
-                  <p className="text-red-500 text-xs pt-2">{getError(registerForm.error, 'password')}</p>
+                  <p className="text-red text-xs pt-2">{getError(registerForm.error, 'password')}</p>
                   }
                 </div>
 

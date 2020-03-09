@@ -5,9 +5,10 @@ import PropTypes from 'prop-types';
 import {AuthConsumer} from '../context/auth';
 import AuthNav from '../components/AuthNav';
 import Footer from '../components/Footer';
-import DocumentTitle from 'react-document-title';
+import useDocumentTitle from '../components/DocumentTitle';
 
 const AuthRoute = ({ component: Component, title, ...rest }) => {
+  useDocumentTitle(title);
   return (
     <AuthConsumer>
       {
@@ -20,16 +21,13 @@ const AuthRoute = ({ component: Component, title, ...rest }) => {
               }
 
               return authenticated ? (
-                <DocumentTitle title={`${title} - ${window.App.name}`}>
-                  <div className="flex flex-col min-h-screen">
-                    <AuthNav />
-                    <div className="flex flex-1">
-                      <Component {...props} />
-                    </div>
-                    <Footer />
+                <div className="flex flex-col min-h-screen">
+                  <AuthNav />
+                  <div className="flex flex-1">
+                    <Component {...props} />
                   </div>
-                </DocumentTitle>
-
+                  <Footer />
+                </div>
               ) : (
                 <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
               );

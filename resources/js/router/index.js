@@ -11,7 +11,6 @@ import Profile from '../pages/Profile';
 import AuthRoute from './AuthRoute';
 import GuestRoute from './GuestRoute';
 import { AuthConsumer } from '../context/auth';
-import DocumentTitle from 'react-document-title';
 import FullPageSpinner from '../components/FullPageSpinner';
 
 function App () {
@@ -30,9 +29,7 @@ function App () {
                 <GuestRoute path="/password/reset/:token" component={ResetPassword} title="reset password"/>
                 <AuthRoute path="/home" component={Home} title="home"/>
                 <AuthRoute path="/profile/:id" component={Profile} title="profile"/>
-                <DocumentTitle title="404">
-                  <Route component={NotFound}/>
-                </DocumentTitle>
+                <Route component={NotFound}/>
               </Switch>
             </div>
           </Router>;
