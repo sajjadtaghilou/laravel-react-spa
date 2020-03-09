@@ -1,7 +1,6 @@
 import client from './client';
 
 export const login = credentials => {
-  console.log(credentials);
   return client().post('/api/login', credentials).then(({ data: { data: user, meta: { token } } }) => {
     return Promise.resolve({ user, token });
   });

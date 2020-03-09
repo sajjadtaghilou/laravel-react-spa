@@ -1,20 +1,23 @@
 const authToken = 'auth_token';
-const INTENDED_URL = 'intended_url';
-const DEFAULT_INTENDED_URL = '/home';
+const intendedUrl = 'intendedUrl';
+const defaultIntendedUrl = '/home';
 
 export const getToken = () => {
   return window.localStorage.getItem(authToken);
 };
 
 export const setToken = token => {
-  window.localStorage.setItem(authToken, token);
+  token
+    ? window.localStorage.setItem(authToken, token)
+    : window.localStorage.removeItem(authToken);
 };
 
 export const getIntendedUrl = () => {
-  let intendedUrl = window.localStorage.getItem(INTENDED_URL) || DEFAULT_INTENDED_URL;
-  return Promise.resolve(intendedUrl);
+  return Promise.resolve(window.localStorage.getItem(intendedUrl) || defaultIntendedUrl);
 };
 
 export const setIntendedUrl = url => {
-  window.localStorage.setItem(INTENDED_URL, url);
+  url
+    ? window.localStorage.setItem(intendedUrl, url)
+    : window.localStorage.removeItem(intendedUrl);
 };

@@ -6,13 +6,15 @@ import {resetPassword} from '../../api/auth';
 function ResetPassword () {
   const token = useRouteMatch().params.token;
 
-  let [resetPasswordForm, setRestPasswordForm] = useState({
+  let initialForm = {
     email: '',
     password: '',
     password_confirmation: '',
-    error: '',
+    error: {},
     resetMessage: ''
-  });
+  };
+
+  let [resetPasswordForm, setRestPasswordForm] = useState(initialForm);
 
   const handleInputChange = e => {
     e.persist();
@@ -32,14 +34,14 @@ function ResetPassword () {
 
     resetPassword({...resetPasswordForm, token})
       .then(({status}) => {
-        setRestPasswordForm({ ...resetPasswordForm, resetMessage: status });
+        setRestPasswordForm({ ...initialForm, resetMessage: status });
       }).catch(error => {
-        resetPasswordForm({ ...resetPasswordForm, resetMessage: '', error: destructServerError(error) });
+        setRestPasswordForm({ ...resetPasswordForm, resetMessage: '', error: destructServerError(error) });
       });
   };
 
   return (
-    <div className="flex justify-center items-center w-full py-4 flex-col min-h-screen bg-grey-300">
+    <div className="flex justify-center items-center w-full py-4 flex-col min-h-screen bg-gray-200">
 
       { resetPasswordForm.resetMessage !== '' && (
         <div className="bg-white border-l-4 border-blue text-sm text-grey-darker p-4 mb-4 w-3/4 sm:w-1/2 lg:w-2/5 xl:w-1/3" role="alert">

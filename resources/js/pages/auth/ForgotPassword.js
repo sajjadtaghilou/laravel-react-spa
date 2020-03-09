@@ -14,7 +14,7 @@ function ForgotPassword () {
     e.preventDefault();
 
     forgotPassword({ email: forgotPasswordForm.email })
-      .then(({ data: { status } }) => {
+      .then(({ status }) => {
         setForgotPasswordForm({
           ...forgotPasswordForm,
           resetMessage: status
