@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 function FormError () {
+  console.log('form error running...');
   let [formError, setFormError] = useState({});
 
   const hasError = field => {

@@ -1,31 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { AuthConsumer } from '../../context/auth';
 import { login } from '../../api/auth';
 import {getIntendedUrl} from '../../utils/auth';
-import useFormError from '../../components/FormError';
+import useInput from '../../components/InputValue';
 
 function Login () {
   let history = useHistory();
-
-  let { hasError, getError, parseServerError, setError } = useFormError();
-
-  let [loginForm, setLoginForm] = useState({ email: '', password: '' });
-
-  const handleInputChange = (e) => {
-    e.persist();
-    setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
-    setError({ [e.target.name]: '' });
-  };
+  let { value: email, bind: bindEmail, error: emailError, parseServerError } = useInput();
+  let { value: password, bind: bindPassword } = useInput();
 
   const handleSubmit = (onLogin) => e => {
     e.preventDefault();
 
-    login(loginForm).then(({ user, token }) => {
+    login({email, password}).then(({ user, token }) => {
       onLogin({user, token});
       getIntendedUrl().then(history.push);
     }).catch(error => {
-      setError(parseServerError(error));
+      parseServerError(error, 'email');
     });
   };
 
@@ -66,18 +58,17 @@ function Login () {
                   Email address
                   </label>
                   <input
-                    value={loginForm.email}
-                    onChange={handleInputChange}
                     id="email"
                     type="email"
                     name="email"
-                    className={`appearance-none border rounded w-full py-1 px-3 text-grey-darker bg-gray-100 ${hasError('email') ? 'border-red' : ''}`}
+                    className={`appearance-none border rounded w-full py-1 px-3 text-grey-darker bg-gray-100 ${emailError ? 'border-red' : ''}`}
                     required
                     autoFocus
+                    {...bindEmail}
                   />
 
-                  {hasError('email') &&
-                  <p className="text-red-500 text-xs pt-2">{ getError('email') }</p>
+                  {emailError &&
+                  <p className="text-red-500 text-xs pt-2">{ emailError }</p>
                   }
 
                 </div>
@@ -85,14 +76,13 @@ function Login () {
                 <div className="mb-3">
                   <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="password"> Password </label>
                   <input
-                    value={loginForm.password}
-                    onChange={handleInputChange}
                     type="password"
                     id="password"
                     name="password"
                     className="appearance-none border rounded w-full py-1 px-3 text-grey-darker bg-gray-100"
-                    required />
-
+                    required
+                    {...bindPassword}
+                  />
                 </div>
 
                 <div className="mb-3 flex justify-end">
