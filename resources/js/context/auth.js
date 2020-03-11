@@ -32,6 +32,7 @@ function AuthProvider ({ children }) {
 
   useEffect(() => {
     initAuth().then((user) => {
+      console.log('user', user);
       setInitializing(false);
       setCurrentUser(user);
       setAuthenticated(!!user);

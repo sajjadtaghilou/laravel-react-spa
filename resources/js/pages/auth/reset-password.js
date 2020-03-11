@@ -5,7 +5,7 @@ import useInputValue from '../../components/input-value';
 
 function ResetPassword () {
   const token = useRouteMatch().params.token;
-  let { passwordResetFeedback, setPasswordResetFeedback } = useState('');
+  let [passwordResetFeedback, setPasswordResetFeedback] = useState('');
   let {
     value: email,
     setValue: setEmail,
@@ -39,8 +39,9 @@ function ResetPassword () {
         [setEmail, setPassword, setPasswordConfirmation].forEach(fn => fn(''));
         setPasswordResetFeedback(status);
       }).catch(error => {
-        [parseEmailError, parsePasswordError].forEach(fn => fn(error));
         setPasswordResetFeedback('');
+        parseEmailError(error, 'email');
+        parsePasswordError(error, 'password');
       });
   };
 
@@ -68,7 +69,7 @@ function ResetPassword () {
             id="email"
             type="email"
             name="email"
-            className={`appearance-none border rounded w-full py-2 px-3 text-grey-darker ${emailError ? 'border-red' : ''}`}
+            className={`appearance-none border rounded w-full py-2 px-3 text-grey-darker ${emailError ? 'border-red-500' : ''}`}
             placeholder="e.g.jane@example.com"
             required
             autoFocus
@@ -84,7 +85,7 @@ function ResetPassword () {
             type="password"
             id="password"
             name="password"
-            className={`appearance-none border rounded w-full py-2 px-3 text-grey-darker  ${passwordError ? 'border-red' : ''}`}
+            className={`appearance-none border rounded w-full py-2 px-3 text-grey-darker  ${passwordError ? 'border-red-500' : ''}`}
             minLength={8}
             required
             {...bindPassword}/>

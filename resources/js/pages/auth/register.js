@@ -24,7 +24,10 @@ function Register () {
       onRegister({user, token});
       history.push('/home');
     }).catch(error => {
-      [parseEmailError, parseNameError, parsePasswordError].forEach(fn => fn(error));
+      console.log('error', error);
+      parseEmailError(error, 'email');
+      parseNameError(error, 'name');
+      parsePasswordError(error, 'password');
     });
   };
 
@@ -46,7 +49,7 @@ function Register () {
               Start your free trial
         </div>
         <div className="text-gray-800">
-          <span className="text-gray-700">Or</span> <Link to="/signin" className="underline">sign in to your account</Link>
+          <span className="text-gray-700">Or</span> <Link to="/login" className="underline">login to your account</Link>
         </div>
       </div>
 
@@ -62,12 +65,12 @@ function Register () {
               type="text"
               id="username"
               name="name"
-              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${naeError ? 'border-red' : ''}`}
+              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${nameError ? 'border-red-500' : ''}`}
               required
               autoFocus
               {...bindName} />
 
-            { nameError && <p className="text-red text-xs pt-2">{nameError}</p> }
+            { nameError && <p className="text-red-500 text-xs pt-2">{nameError}</p> }
           </div>
 
           <div className="mb-4">
@@ -78,11 +81,11 @@ function Register () {
               id="email"
               name="email"
               type="email"
-              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${emailError ? 'border-red' : ''}`}
+              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${emailError ? 'border-red-500' : ''}`}
               required
               {...bindEmail} />
 
-            { emailError && <p className="text-red text-xs pt-2">{ emailError }</p> }
+            { emailError && <p className="text-500 text-xs pt-2">{ emailError }</p> }
           </div>
 
           <div className="mb-4">
@@ -91,12 +94,12 @@ function Register () {
               type="password"
               id="password"
               name="password"
-              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100  ${passwordError ? 'border-red' : ''}`}
+              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100  ${passwordError ? 'border-red-500' : ''}`}
               minLength={6}
               required
               {...bindPassword}/>
 
-            { passwordError && <p className="text-red text-xs pt-2">{ passwordError }</p> }
+            { passwordError && <p className="text-red-500 text-xs pt-2">{ passwordError }</p> }
           </div>
 
           <div className="mb-4">
@@ -105,7 +108,7 @@ function Register () {
               type="password"
               id="password-confirmation"
               name="password_confirmation"
-              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${passwordError ? 'border-red' : ''}`}
+              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${passwordError ? 'border-red-500' : ''}`}
               required
               {...bindPasswordConfirmation}/>
           </div>

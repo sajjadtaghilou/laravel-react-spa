@@ -14012,6 +14012,10 @@ video {
   }
 }
 
+input:invalid {
+  box-shadow: none;
+}
+
 @media (min-width: 640px) {
   .sm\:sr-only {
     position: absolute;

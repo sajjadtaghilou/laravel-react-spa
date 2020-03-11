@@ -14,7 +14,7 @@ function ForgotPassword () {
       .then(({ status }) => {
         setResetFeedback(status);
       }).catch(error => {
-        parseServerError(parseServerError(error));
+        parseServerError(error, 'email');
       });
   };
 
@@ -56,7 +56,7 @@ function ForgotPassword () {
               id="email"
               type="email"
               name="email"
-              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${emailError ? 'border-red' : ''}`}
+              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${emailError ? 'border-red-500' : ''}`}
               placeholder="e.g.jane@example.com"
               required
               autoFocus
