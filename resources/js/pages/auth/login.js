@@ -58,10 +58,7 @@ function Login () {
               {...bindEmail}
             />
 
-            {
-              emailError && <p className="text-red-500 text-xs pt-2">{ emailError }</p>
-            }
-
+            { emailError && <p className="text-red-500 text-xs pt-2">{ emailError }</p> }
           </div>
 
           <div className="mb-3">
