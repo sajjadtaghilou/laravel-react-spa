@@ -1,5 +1,5 @@
 import React from 'react';
-import GuestNav from '../components/GuestNav';
+import GuestNav from '../components/guest-nav';
 
 function Welcome () {
   return (

@@ -1,42 +1,29 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { forgotPassword } from '../../api/auth';
-import useFormError from '../../components/FormError';
+import useInputValue from '../../components/input-value';
 
 function ForgotPassword () {
-  let [forgotPasswordForm, setForgotPasswordForm] = useState({ email: '', resetMessage: '' });
-  let { hasError, getError, parseServerError, setError } = useFormError();
+  let [resetFeedback, setResetFeedback] = useState('');
+  let { value: email, bind: bindEmail, error: emailError, parseServerError } = useInputValue();
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    forgotPassword({ email: forgotPasswordForm.email })
+    forgotPassword({ email })
       .then(({ status }) => {
-        setForgotPasswordForm({ ...forgotPasswordForm, resetMessage: status });
+        setResetFeedback(status);
       }).catch(error => {
-        setError(parseServerError(error));
+        parseServerError(parseServerError(error));
       });
-  };
-
-  const handleInputChange = e => {
-    e.persist();
-
-    setForgotPasswordForm({
-      ...forgotPassword,
-      [e.target.name]: e.target.value,
-      resetMessage: '' }
-    );
-
-    setError({ [e.target.name]: '' });
   };
 
   return (
     <div className="flex justify-center items-center w-full py-4 flex-col min-h-screen bg-gray-200">
-
       {
-        forgotPasswordForm.resetMessage !== '' && (
+        resetFeedback && (
           <div className="bg-white border-l-4 border-blue text-sm text-grey-darker p-4 mb-4 w-3/4 sm:w-1/2 lg:w-2/5 xl:w-1/3" role="alert">
-            <p> {forgotPasswordForm.resetMessage}</p>
+            <p> {resetFeedback}</p>
           </div>)
       }
 
@@ -65,19 +52,17 @@ function ForgotPassword () {
                   Enter your email address
             </label>
             <input
-              value={forgotPasswordForm.email}
-              onChange={ handleInputChange }
+
               id="email"
               type="email"
               name="email"
-              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${hasError('email') ? 'border-red' : ''}`}
+              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${emailError ? 'border-red' : ''}`}
               placeholder="e.g.jane@example.com"
               required
               autoFocus
+              {...bindEmail}
             />
-            {hasError('email') &&
-                  <p className="text-red-500 text-xs pt-2">{getError('email')}</p>
-            }
+            { emailError && <p className="text-red-500 text-xs pt-2">{ emailError }</p> }
 
             <div className="mt-6 mb-2">
               <button type="submit"
@@ -103,7 +88,6 @@ function ForgotPassword () {
           className="underline text-grey-darkest text-indigo">go back to the login screen
         </Link>
       </div>
-
     </div>
   );
 }

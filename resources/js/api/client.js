@@ -1,5 +1,5 @@
 import axios from 'axios';
-import loadProgressBar from '../utils/progressBar';
+import loadProgressBar from '../utils/progress-bar';
 import {getToken} from '../utils/auth';
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';

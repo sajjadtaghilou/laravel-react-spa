@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const GuestNav = () => {
+function GuestNav () {
   return (
     <div className="w-full px-6 mx-auto flex items-center justify-between">
       <ul className="list-reset flex pt-4">
