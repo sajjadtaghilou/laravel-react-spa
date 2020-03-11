@@ -4,7 +4,6 @@ import {getToken, setToken} from '../utils/auth';
 import {getUser} from '../api/auth';
 
 const AuthContext = React.createContext();
-const AuthConsumer = AuthContext.Consumer;
 
 AuthProvider.propTypes = {
   children: PropTypes.element.isRequired
@@ -62,4 +61,4 @@ function useAuth () {
   return context;
 }
 
-export { AuthProvider, AuthConsumer, useAuth };
+export { AuthProvider, useAuth };

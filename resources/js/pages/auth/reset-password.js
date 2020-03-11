@@ -5,10 +5,26 @@ import useInputValue from '../../components/input-value';
 
 function ResetPassword () {
   const token = useRouteMatch().params.token;
-  let { value: email, setValue: setEmail, bind: bindEmail, error: emailError, parseServerError: parseEmailError } = useInputValue();
-  let { value: password, setValue: setPassword, bind: bindPassword, error: passwordError, parseServerError: parsePasswordError } = useInputValue();
-  let { value: passwordConfirmation, setValue: setPasswordConfirmation, bind: bindPasswordConfirmation } = useInputValue();
   let { passwordResetFeedback, setPasswordResetFeedback } = useState('');
+  let {
+    value: email,
+    setValue: setEmail,
+    bind: bindEmail,
+    error: emailError,
+    parseServerError: parseEmailError
+  } = useInputValue();
+  let {
+    value: password,
+    setValue: setPassword,
+    bind: bindPassword,
+    error: passwordError,
+    parseServerError: parsePasswordError
+  } = useInputValue();
+  let {
+    value: passwordConfirmation,
+    setValue: setPasswordConfirmation,
+    bind: bindPasswordConfirmation
+  } = useInputValue();
 
   const handleSubmit = e => {
     e.preventDefault();
