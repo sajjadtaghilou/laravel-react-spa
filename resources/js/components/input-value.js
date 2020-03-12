@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 
-function InputValue () {
+function InputValue (field) {
   let [value, setValue] = useState('');
   let [error, setError] = useState('');
 
@@ -9,7 +9,7 @@ function InputValue () {
     setError('');
   }, []);
 
-  let parseServerError = (error, field) => {
+  let parseServerError = error => {
     console.log('error', error);
 
     if (error.response && error.response.data && error.response.data.errors && error.response.data.errors[field]) {
@@ -26,6 +26,7 @@ function InputValue () {
       onChange
     },
     error,
+    setError,
     parseServerError
   };
 }

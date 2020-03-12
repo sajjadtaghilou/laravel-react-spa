@@ -7,28 +7,25 @@ import useInputValue from '../../components/input-value';
 function Register () {
   let history = useHistory();
   let { setCurrentUser, setToken } = useAuth();
-  let { value: email, bind: bindEmail, error: emailError, parseServerError: parseEmailError } = useInputValue();
-  let { value: name, bind: bindName, error: nameError, parseServerError: parseNameError } = useInputValue();
-  let { value: password, bind: bindPassword, error: passwordError, parseServerError: parsePasswordError } = useInputValue();
-  let { value: passwordConfirmation, bind: bindPasswordConfirmation } = useInputValue();
+  let email = useInputValue('email');
+  let name = useInputValue('name');
+  let password = useInputValue('password');
+  let passwordConfirmation = useInputValue('password_confirmation');
 
   const handleSubmit = e => {
     e.preventDefault();
 
     register({
-      name,
-      email,
-      password,
-      password_confirmation: passwordConfirmation
+      name: name.value,
+      email: email.value,
+      password: password.value,
+      password_confirmation: passwordConfirmation.value
     }).then(({user, token}) => {
       setCurrentUser(user);
       setToken(token);
       history.push('/home');
     }).catch(error => {
-      console.log('error', error);
-      parseEmailError(error, 'email');
-      parseNameError(error, 'name');
-      parsePasswordError(error, 'password');
+      [email, name, password].forEach(({parseServerError}) => parseServerError(error));
     });
   };
 
@@ -37,13 +34,8 @@ function Register () {
 
       <div className="p-8 flex flex-col items-center">
         <div>
-          <Link
-            to="/"
-          >  <img width="48"
-              className="align-middle mx-2"
-              alt="Google"
-              title="Google"
-              src="/images/icons/laravel.svg" />
+          <Link to="/" >
+            <img width="48" className="align-middle mx-2" alt="laravel" title="laravel" src="/images/icons/laravel.svg" />
           </Link>
         </div>
         <div className="text-2xl leading-loose">
@@ -55,7 +47,7 @@ function Register () {
       </div>
 
       <div className="bg-white border rounded border-grey-light w-3/4 sm:w-1/2 lg:w-2/5 xl:w-1/4 px-8 py-4 shadow">
-        <form onSubmit={handleSubmit(onRegister)}
+        <form onSubmit={handleSubmit}
           method="POST"
         >
           <div className="mb-4 mt-2">
@@ -66,12 +58,12 @@ function Register () {
               type="text"
               id="username"
               name="name"
-              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${nameError ? 'border-red-500' : ''}`}
+              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${name.error ? 'border-red-500' : ''}`}
               required
               autoFocus
-              {...bindName} />
+              {...name.bindPassword} />
 
-            { nameError && <p className="text-red-500 text-xs pt-2">{nameError}</p> }
+            { name.error && <p className="text-red-500 text-xs pt-2">{name.error}</p> }
           </div>
 
           <div className="mb-4">
@@ -82,11 +74,11 @@ function Register () {
               id="email"
               name="email"
               type="email"
-              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${emailError ? 'border-red-500' : ''}`}
+              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${email.error ? 'border-red-500' : ''}`}
               required
-              {...bindEmail} />
+              {...email.bind} />
 
-            { emailError && <p className="text-500 text-xs pt-2">{ emailError }</p> }
+            { email.error && <p className="text-500 text-xs pt-2">{ email.error }</p> }
           </div>
 
           <div className="mb-4">
@@ -95,12 +87,12 @@ function Register () {
               type="password"
               id="password"
               name="password"
-              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100  ${passwordError ? 'border-red-500' : ''}`}
+              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100  ${password.error ? 'border-red-500' : ''}`}
               minLength={6}
               required
-              {...bindPassword}/>
+              {...password.bind}/>
 
-            { passwordError && <p className="text-red-500 text-xs pt-2">{ passwordError }</p> }
+            { password.error && <p className="text-red-500 text-xs pt-2">{ password.error }</p> }
           </div>
 
           <div className="mb-4">
@@ -109,9 +101,9 @@ function Register () {
               type="password"
               id="password-confirmation"
               name="password_confirmation"
-              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${passwordError ? 'border-red-500' : ''}`}
+              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${password.error ? 'border-red-500' : ''}`}
               required
-              {...bindPasswordConfirmation}/>
+              {...passwordConfirmation.bind}/>
           </div>
 
           <div className="mb-4">

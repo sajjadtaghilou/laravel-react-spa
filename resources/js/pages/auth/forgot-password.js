@@ -5,17 +5,14 @@ import useInputValue from '../../components/input-value';
 
 function ForgotPassword () {
   let [resetFeedback, setResetFeedback] = useState('');
-  let { value: email, bind: bindEmail, error: emailError, parseServerError } = useInputValue();
+  let email = useInputValue('email');
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    forgotPassword({ email })
-      .then(({ status }) => {
-        setResetFeedback(status);
-      }).catch(error => {
-        parseServerError(error, 'email');
-      });
+    forgotPassword({ email: email.value })
+      .then(status => setResetFeedback(status))
+      .catch(email.parseServerError);
   };
 
   return (
@@ -29,12 +26,11 @@ function ForgotPassword () {
 
       <div className="p-4 flex flex-col items-center">
         <div>
-          <Link
-            to="/"
-          >  <img width="48"
+          <Link to="/" >
+            <img width="48"
               className="align-middle mx-2"
-              alt="Google"
-              title="Google"
+              alt="laravel"
+              title="laravel"
               src="/images/icons/laravel.svg" />
           </Link>
         </div>
@@ -56,13 +52,13 @@ function ForgotPassword () {
               id="email"
               type="email"
               name="email"
-              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${emailError ? 'border-red-500' : ''}`}
+              className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${email.error ? 'border-red-500' : ''}`}
               placeholder="e.g.jane@example.com"
               required
               autoFocus
-              {...bindEmail}
+              {...email.bind}
             />
-            { emailError && <p className="text-red-500 text-xs pt-2">{ emailError }</p> }
+            { email.error && <p className="text-red-500 text-xs pt-2">{ email.error }</p> }
 
             <div className="mt-6 mb-2">
               <button type="submit"

@@ -6,42 +6,26 @@ import useInputValue from '../../components/input-value';
 function ResetPassword () {
   const token = useRouteMatch().params.token;
   let [passwordResetFeedback, setPasswordResetFeedback] = useState('');
-  let {
-    value: email,
-    setValue: setEmail,
-    bind: bindEmail,
-    error: emailError,
-    parseServerError: parseEmailError
-  } = useInputValue();
-  let {
-    value: password,
-    setValue: setPassword,
-    bind: bindPassword,
-    error: passwordError,
-    parseServerError: parsePasswordError
-  } = useInputValue();
-  let {
-    value: passwordConfirmation,
-    setValue: setPasswordConfirmation,
-    bind: bindPasswordConfirmation
-  } = useInputValue();
+  let email = useInputValue('email');
+  let password = useInputValue('password');
+  let passwordConfirmation = useInputValue('password_confirmation');
 
   const handleSubmit = e => {
     e.preventDefault();
+    [email, password, passwordConfirmation].forEach(({setError}) => setError(''));
 
     resetPassword({
-      email,
-      password,
-      password_confirmation: passwordConfirmation,
+      email: email.value,
+      password: password.value,
+      password_confirmation: passwordConfirmation.value,
       token
     })
-      .then(({status}) => {
-        [setEmail, setPassword, setPasswordConfirmation].forEach(fn => fn(''));
+      .then(status => {
+        [email, password, passwordConfirmation].forEach(({setValue}) => setValue(''));
         setPasswordResetFeedback(status);
       }).catch(error => {
         setPasswordResetFeedback('');
-        parseEmailError(error, 'email');
-        parsePasswordError(error, 'password');
+        [email, password, passwordConfirmation].forEach(({parseServerError}) => parseServerError(error));
       });
   };
 
@@ -69,14 +53,14 @@ function ResetPassword () {
             id="email"
             type="email"
             name="email"
-            className={`appearance-none border rounded w-full py-2 px-3 text-grey-darker ${emailError ? 'border-red-500' : ''}`}
+            className={`appearance-none border rounded w-full py-2 px-3 text-grey-darker ${email.error ? 'border-red-500' : ''}`}
             placeholder="e.g.jane@example.com"
             required
             autoFocus
-            {...bindEmail}
+            {...email.bind}
           />
 
-          { emailError && <p className="text-red-500 text-xs pt-2">{ emailError }</p> }
+          { email.error && <p className="text-red-500 text-xs pt-2">{ email.error }</p> }
         </div>
 
         <div className="mb-4">
@@ -85,12 +69,12 @@ function ResetPassword () {
             type="password"
             id="password"
             name="password"
-            className={`appearance-none border rounded w-full py-2 px-3 text-grey-darker  ${passwordError ? 'border-red-500' : ''}`}
+            className={`appearance-none border rounded w-full py-2 px-3 text-grey-darker  ${password.error ? 'border-red-500' : ''}`}
             minLength={8}
             required
-            {...bindPassword}/>
+            {...password.bind}/>
 
-          { passwordError && <p className="text-red-500 text-xs pt-2">{ passwordError}</p> }
+          { password.error && <p className="text-red-500 text-xs pt-2">{ password.error}</p> }
         </div>
 
         <div className="mb-4">
@@ -99,9 +83,9 @@ function ResetPassword () {
             type="password"
             id="password-confirmation"
             name="password_confirmation"
-            className={`appearance-none border rounded w-full py-2 px-3 text-grey-darker  ${passwordError ? 'border-red' : ''}`}
+            className={`appearance-none border rounded w-full py-2 px-3 text-grey-darker  ${password.error ? 'border-red' : ''}`}
             required
-            {...bindPasswordConfirmation}/>
+            {...passwordConfirmation.bind}/>
         </div>
 
         <div className="mt-6 mb-2">
