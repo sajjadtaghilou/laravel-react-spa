@@ -2,9 +2,7 @@ const authToken = 'auth_token';
 const intendedUrl = 'intendedUrl';
 const defaultIntendedUrl = '/home';
 
-export const getToken = () => {
-  return window.localStorage.getItem(authToken);
-};
+export const getToken = () => window.localStorage.getItem(authToken);
 
 export const setToken = token => {
   token
