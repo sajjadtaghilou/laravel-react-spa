@@ -6,13 +6,13 @@ import useInputValue from '../../components/input-value';
 
 function Register () {
   let history = useHistory();
-  let { onRegister } = useAuth();
+  let { setCurrentUser, setToken } = useAuth();
   let { value: email, bind: bindEmail, error: emailError, parseServerError: parseEmailError } = useInputValue();
   let { value: name, bind: bindName, error: nameError, parseServerError: parseNameError } = useInputValue();
   let { value: password, bind: bindPassword, error: passwordError, parseServerError: parsePasswordError } = useInputValue();
   let { value: passwordConfirmation, bind: bindPasswordConfirmation } = useInputValue();
 
-  const handleSubmit = onRegister => e => {
+  const handleSubmit = e => {
     e.preventDefault();
 
     register({
@@ -21,7 +21,8 @@ function Register () {
       password,
       password_confirmation: passwordConfirmation
     }).then(({user, token}) => {
-      onRegister({user, token});
+      setCurrentUser(user);
+      setToken(token);
       history.push('/home');
     }).catch(error => {
       console.log('error', error);

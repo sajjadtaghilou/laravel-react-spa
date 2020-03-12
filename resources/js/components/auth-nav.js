@@ -4,15 +4,16 @@ import { useAuth } from '../context/auth';
 import { setIntendedUrl } from '../utils/auth';
 
 function AuthNav () {
-  let {onLogout, currentUser} = useAuth();
+  let {setCurrentUser, setToken, currentUser} = useAuth();
   let history = useHistory();
   let [hideMobileNav, setHideMobileNav] = useState(true);
 
   const toggleMobileNav = () => { setHideMobileNav(prevState => !prevState); };
   const closeMobileNav = () => setHideMobileNav(true);
 
-  const handleLogout = onLogout => () => {
-    onLogout();
+  const handleLogout = () => {
+    setCurrentUser(null);
+    setToken(null);
     history.push('/');
     setIntendedUrl(null);
   };
@@ -89,7 +90,7 @@ function AuthNav () {
               </NavLink>
             </li>
             <li
-              onClick={handleLogout(onLogout)}
+              onClick={handleLogout}
               className="px-4 py-3 lg:py-0">
               <Link
                 to="/logout"

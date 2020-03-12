@@ -6,16 +6,17 @@ import {getIntendedUrl} from '../../utils/auth';
 import useInputValue from '../../components/input-value';
 
 function Login () {
-  let {onLogin} = useAuth();
+  let {setCurrentUser, setToken} = useAuth();
   let history = useHistory();
   let { value: email, bind: bindEmail, error: emailError, parseServerError } = useInputValue();
   let { value: password, bind: bindPassword } = useInputValue();
 
-  const handleSubmit = (onLogin) => e => {
+  const handleSubmit = e => {
     e.preventDefault();
 
     login({email, password}).then(({ user, token }) => {
-      onLogin({user, token});
+      setToken(token);
+      setCurrentUser(user);
       getIntendedUrl().then(history.push);
     }).catch(error => {
       parseServerError(error, 'email');
@@ -42,7 +43,7 @@ function Login () {
       </div>
 
       <div className="border rounded bg-white border-gray-300 w-3/4 sm:w-1/2 lg:w-2/5 xl:w-1/4 px-8 py-4 shadow">
-        <form onSubmit={handleSubmit(onLogin)}
+        <form onSubmit={handleSubmit}
           method="POST">
           <div className="mb-4 mt-4">
             <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="email">
