@@ -12,9 +12,7 @@ export const setToken = token => {
     : window.localStorage.removeItem(authToken);
 };
 
-export const getIntendedUrl = () => {
-  return Promise.resolve(window.localStorage.getItem(intendedUrl) || defaultIntendedUrl);
-};
+export const getIntendedUrl = () => window.localStorage.getItem(intendedUrl) || defaultIntendedUrl;
 
 export const setIntendedUrl = url => {
   url

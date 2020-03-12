@@ -20,7 +20,7 @@ function Login () {
     }).then(({ user, token }) => {
       setToken(token);
       setCurrentUser(user);
-      getIntendedUrl().then(history.push);
+      history.push(getIntendedUrl());
     }).catch(email.parseServerError);
   };
 

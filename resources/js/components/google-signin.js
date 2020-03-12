@@ -7,6 +7,7 @@ import {googleLogin} from '../api/auth';
 
 function GoogleLogin () {
   let [gapi, setGapi] = useState(null);
+  let history = useHistory();
 
   const handleAuthClick = onGoogleLogin => async () => {
     try {
@@ -15,7 +16,7 @@ function GoogleLogin () {
       googleLogin({ id_token: res.getAuthResponse().id_token })
         .then(({ user, token }) => {
           onGoogleLogin({ user, token });
-          getIntendedUrl().then(url => useHistory().push(url));
+          history.push(getIntendedUrl());
         });
     } catch (e) {
       console.log('e', e);
