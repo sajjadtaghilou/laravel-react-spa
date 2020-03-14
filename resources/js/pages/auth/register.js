@@ -61,7 +61,7 @@ function Register () {
               className={`appearance-none border rounded w-full py-1 px-3 bg-gray-100 ${name.error ? 'border-red-500' : ''}`}
               required
               autoFocus
-              {...name.bindPassword} />
+              {...name.bind} />
 
             { name.error && <p className="text-red-500 text-xs pt-2">{name.error}</p> }
           </div>
