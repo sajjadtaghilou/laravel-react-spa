@@ -4,6 +4,7 @@ import { useAuth } from '../../context/auth';
 import { login } from '../../api/auth';
 import {getIntendedUrl} from '../../utils/auth';
 import useInputValue from '../../components/input-value';
+import GoogleLogin from '../../components/google-login';
 
 function Login () {
   let {setCurrentUser, setToken} = useAuth();
@@ -85,6 +86,10 @@ function Login () {
             </button>
           </div>
         </form>
+      </div>
+
+      <div>
+        <GoogleLogin></GoogleLogin>
       </div>
     </div>
   );
