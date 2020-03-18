@@ -14,13 +14,6 @@ export const register = credentials => {
   });
 };
 
-export const googleLogin = credentials => {
-  return client().post('/api/google/login', credentials)
-    .then(({ data: { data: user, meta: {token} } }) => {
-      return { user, token };
-    });
-};
-
 export const forgotPassword = ({ email }) => {
   return client().post('/api/password/email', { email })
     .then(({ data: { status } }) => status);
