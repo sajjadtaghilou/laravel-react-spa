@@ -22,9 +22,6 @@ Route::name('api.')->namespace('Api')->group(function () {
             // Password Reset Routes...
             Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
             Route::post('password/reset', 'ResetPasswordController@reset');
-
-            // Socialite Login
-            Route::post('google/login', 'GoogleLoginController');
         });
     });
 
